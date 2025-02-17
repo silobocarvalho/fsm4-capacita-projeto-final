@@ -9,3 +9,5 @@ Instala no ambiente de dev
 
 npx prisma init
 Cria arquivos de configuração do Prisma
+
+npx prisma migrate dev --name init
