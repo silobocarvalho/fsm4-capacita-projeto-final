@@ -23,7 +23,7 @@ enum Raridade {
 }
 
 model pokemons{
-  id_pokemon           Int          @id @default(autoincrement())
+  id_pokemon   String    @id @default(uuid())
   nome         String
   tipo         String
   raridade     Raridade
