@@ -12,6 +12,16 @@ app.get('/pokemons', async (req, res) => {
     res.json(todosPokemons);
 });
 
+// GET algumacoisa --> Testes!
+app.get('/algumacoisa', async (req, res) => {
+    const pokemonsDb = await prisma.pokemons.findMany({
+        orderBy: {
+            preco: 'asc'
+        }
+    })
+    res.json(pokemonsDb);
+});
+
 // POST pokemons --> Adicionar um novo pokemon!
 app.post('/pokemons', async (req, res) => {
     // nome tipo raridade e preço
@@ -33,6 +43,8 @@ app.post('/pokemons', async (req, res) => {
     }
 
 });
+
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
