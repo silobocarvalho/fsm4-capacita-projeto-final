@@ -12,16 +12,6 @@ app.get('/pokemons', async (req, res) => {
     res.json(todosPokemons);
 });
 
-// GET algumacoisa --> Testes!
-app.get('/algumacoisa', async (req, res) => {
-    const pokemonsDb = await prisma.pokemons.findMany({
-        orderBy: {
-            preco: 'asc'
-        }
-    })
-    res.json(pokemonsDb);
-});
-
 // POST pokemons --> Adicionar um novo pokemon!
 app.post('/pokemons', async (req, res) => {
     // nome tipo raridade e preço
@@ -41,9 +31,61 @@ app.post('/pokemons', async (req, res) => {
         console.log(e);
         res.json(`Deu erro, que pena! :-( :::::::: ${e} `)
     }
-
 });
 
+// GET algumacoisa --> Testes!
+app.get('/algumacoisa', async (req, res) => {
+    const pokemonsDb = await prisma.pokemons.findMany({
+        orderBy: {
+            preco: 'asc'
+        }
+    })
+    res.json(pokemonsDb);
+});
+
+// PUT pokemons/:id --> Atualizar um pokemon específico!
+app.put('/pokemons/:id', async (req, res) => {
+    //Descobrir qual Pokemon
+    const {id} = req.params;
+
+    const { nome, tipo, raridade, preco, img_url } = req.body;
+
+    console.log(`ID Pokemon ${id}`)
+    console.log(`Novos dados Pokemon ${nome} | ${tipo} | ${raridade} | ${preco} | ${img_url}`)
+
+    try{
+        const pokemonAlterado = await prisma.pokemons.update({
+            where: {id_pokemon: id},
+            data: {
+                nome,
+                tipo,
+                raridade,
+                preco,
+                img_url
+            }
+        })
+        res.json(pokemonAlterado)
+
+    }catch(e){
+        console.log(e)
+        res.json(`Deu erro, que pena! :-( :::::::: ${e} `)
+    }
+});
+
+app.delete('/pokemons/:id', async (req, res) => {
+    console.log('entrou no delete!')
+    const {id} = req.params;
+
+    try{
+        const pokemonDeletado = await prisma.pokemons.delete({
+            where: {id_pokemon: id}
+        })
+        res.json(pokemonDeletado)
+    }catch(e){
+        console.log(e)
+        res.json(`Deu erro, que pena! :-( :::::::: ${e} `)
+    }
+})
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
