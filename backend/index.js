@@ -87,6 +87,34 @@ app.delete('/pokemons/:id', async (req, res) => {
     }
 })
 
+app.get('/pokemons/populate', async (req, res) => {
+
+    try {
+        const pokemonsCriados = await prisma.pokemons.createMany({
+            data: [
+                {nome: 'Pikachu', tipo: 'Eletrico', raridade: 'Comum', preco: 300, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'},
+                {nome: 'Charmander', tipo: 'Fogo', raridade: 'Comum', preco: 200, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'},
+                {nome: 'Squirtle', tipo: 'Agua', raridade: 'Comum', preco: 200, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'},
+                {nome: 'Bulbasaur', tipo: 'Planta', raridade: 'Comum', preco: 200, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'},
+                {nome: 'Mewtwo', tipo: 'Psiquico', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png'},
+                {nome: 'Mew', tipo: 'Psiquico', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png'},
+                {nome: 'Gengar', tipo: 'Fantasma', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png'},
+                {nome: 'Gyarados', tipo: 'Agua', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/130.png'},
+                {nome: 'Dragonite', tipo: 'Dragão', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png'},
+                {nome: 'Machamp', tipo: 'Lutador', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/68.png'},
+                {nome: 'Alakazam', tipo: 'Psiquico', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png'},
+                {nome: 'Venusaur', tipo: 'Planta', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png'},
+                {nome: 'Blastoise', tipo: 'Agua', raridade: 'Raro', preco: 1000, img_url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png'}
+            ],
+        });
+        res.json(pokemonsCriados);
+    } catch (e) {
+        console.log(e);
+        res.json(`Deu erro, que pena! :-( :::::::: ${e} `)
+    }
+});
+
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
