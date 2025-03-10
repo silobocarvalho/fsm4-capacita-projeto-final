@@ -25,6 +25,7 @@ afterAll(async () => {
     server.close(); // Encerra o servidor Express
 });
 
+
 describe('Testes das rotas de Pokémons', () => {
     let pokemonId;
 
@@ -33,12 +34,11 @@ describe('Testes das rotas de Pokémons', () => {
         const response = await request(app)
             .post('/pokemons')
             .send({
-                nome: 'PikachuTest',
-                preco: 300,
-                estoque: 1,
-                tipo: 'Eletrico',
-                raridade: 'Comum',
-                url_img: 'https://example.com/pikachu.png'
+                nome: "SkittyTest",
+                tipo: "Psiquico",
+                raridade: "Raro",
+                preco: 1111,
+                img_url : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/test.png"
             });
 
         expect(response.status).toBe(201); // 201 representando que o objeto foi criado no servidor.
@@ -53,6 +53,10 @@ describe('Testes das rotas de Pokémons', () => {
 
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body)).toBe(true);
+        const arrayPokemons = response.body;
+        let pokemonPresente = false;
+        arrayPokemons.forEach((pokemon) => { if(pokemon.id_pokemon === pokemonId) pokemonPresente = true; });
+        expect(pokemonPresente).toBe(true);
     });
 
     // Teste para a rota PUT /pokemons/:idPokemon
@@ -60,16 +64,15 @@ describe('Testes das rotas de Pokémons', () => {
         const response = await request(app)
             .put(`/pokemons/${pokemonId}`)
             .send({
-                nome: 'Raichu',
-                preco: 500,
-                estoque: 2,
-                tipo: 'Eletrico',
-                raridade: 'Raro',
-                url_img: 'https://example.com/raichu.png'
+                nome: "Skitty NOVO NOME",
+                tipo: "Psiquico",
+                raridade: "Raro",
+                preco: 2222,
+                img_url : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/300.png"
             });
 
         expect(response.status).toBe(200);
-        expect(response.body.nome).toBe('Raichu');
+        expect(response.body.nome).toBe('Skitty NOVO NOME');
     });
 
     // Teste para a rota DELETE /pokemons/:idPokemon
@@ -80,4 +83,18 @@ describe('Testes das rotas de Pokémons', () => {
         expect(response.status).toBe(200);
         expect(response.body.id_pokemon).toBe(pokemonId);
     });
+
+    // Validar que o Pokemon foi deletado com sucesso
+    it('Deve retornar a lista de Pokémons sem o Pokemon deletado', async () => {
+        const response = await request(app)
+            .get('/pokemons');
+
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
+        const arrayPokemons = response.body;
+        let pokemonPresente = false;
+        arrayPokemons.forEach((pokemon) => { if(pokemon.id_pokemon === pokemonId) pokemonPresente = true; });
+        expect(pokemonPresente).toBe(false);
+    });
+    
 });

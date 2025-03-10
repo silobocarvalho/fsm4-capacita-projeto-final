@@ -29,4 +29,5 @@ model pokemons{
   raridade     Raridade
   preco        Decimal
   img_url      String @default("https://img.cdndsgni.com/preview/10432860.jpg")
+  preco_compra Decimal @default(0)
 }

@@ -8,8 +8,38 @@ app.use(express.json());
 
 // GET pokemons --> Liste todos os pokemons!
 app.get('/pokemons', async (req, res) => {
-    const todosPokemons = await prisma.pokemons.findMany(); // Similar ao "Select * from pokemons"
-    res.json(todosPokemons);
+    //const todosPokemons = await prisma.pokemons.findMany(); // Similar ao "Select * from pokemons"
+
+    // A segunda opção é retornar somente alguns atributos do Pokemon:
+    // * 1. Filtrando no banco de dados: 
+      
+    
+    const todosPokemons = await prisma.pokemons.findMany({
+        // vai ser convertido para o comando SQL: SELECT id_pokemon, nome, preco, estoque, tipo, raridade, url_img FROM pokemons    
+        select: {  
+                id_pokemon: true,
+                nome: true,
+                tipo: true,
+                raridade: true,
+                preco: true,
+                img_url: true
+            }
+        });
+        res.json(todosPokemons);
+
+     /*
+        // 2. Filtrando com Map
+        const pokemonsFiltrados = todosPokemons.map(pokemon => ({
+            id_pokemon: pokemon.id_pokemon,
+            nome: pokemon.nome,
+            tipo: pokemon.tipo,
+            raridade: pokemon.raridade,
+            preco: pokemon.preco,
+            img_url: pokemon.img_url,
+        }));
+        res.json(pokemonsFiltrados);
+        */
+    
 });
 
 // POST pokemons --> Adicionar um novo pokemon!
