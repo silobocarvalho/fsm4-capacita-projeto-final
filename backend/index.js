@@ -15,7 +15,7 @@ app.get('/pokemons', async (req, res) => {
 // POST pokemons --> Adicionar um novo pokemon!
 app.post('/pokemons', async (req, res) => {
     // nome tipo raridade e preço
-    const { nome, tipo, raridade, preco } = req.body;
+    const { nome, tipo, raridade, preco, img_url } = req.body;
     try {
         // Será convertido para um INSERT INTO pokemons
         const pokemonCriado = await prisma.pokemons.create({
@@ -24,9 +24,10 @@ app.post('/pokemons', async (req, res) => {
                 tipo,
                 raridade,
                 preco,
+                img_url
             },
         });
-        res.json(pokemonCriado);
+        res.status(201).json(pokemonCriado)
     } catch (e) {
         console.log(e);
         res.json(`Deu erro, que pena! :-( :::::::: ${e} `)
@@ -115,6 +116,8 @@ app.get('/pokemons/populate', async (req, res) => {
 });
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = { app, server };
