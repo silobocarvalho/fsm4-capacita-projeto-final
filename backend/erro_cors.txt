@@ -1,0 +1,8 @@
+Se tiver erro com o Cors da aplicação, deve-se instalar a biblioteca com "npm install cors" e então fazer uso dessa biblioteca dentro do app Express.
+
+1. npm install cors
+
+Dentro do seu index.js no servidor back-end:
+
+2. const cors = require('cors');
+3. app.use(cors())
