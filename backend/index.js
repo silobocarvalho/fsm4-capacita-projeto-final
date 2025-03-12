@@ -2,9 +2,11 @@ const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const app = express();
+const cors = require('cors');
 const port = 3000;
 
 app.use(express.json());
+app.use(cors())
 
 // GET pokemons --> Liste todos os pokemons!
 app.get('/pokemons', async (req, res) => {
@@ -25,6 +27,9 @@ app.get('/pokemons', async (req, res) => {
                 img_url: true
             }
         });
+
+        //Poderia filtrar se temos URLs inválidas para as imagens.
+        
         res.json(todosPokemons);
 
      /*
